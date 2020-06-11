@@ -2,6 +2,7 @@ package br.com.curso.cursospring;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +14,7 @@ import br.com.curso.cursospring.domain.Cidade;
 import br.com.curso.cursospring.domain.Cliente;
 import br.com.curso.cursospring.domain.Endereco;
 import br.com.curso.cursospring.domain.Estado;
+import br.com.curso.cursospring.domain.ItemPedido;
 import br.com.curso.cursospring.domain.Pagamento;
 import br.com.curso.cursospring.domain.PagamentoComBoleto;
 import br.com.curso.cursospring.domain.PagamentoComCartao;
@@ -25,6 +27,7 @@ import br.com.curso.cursospring.repositories.CidadeRepository;
 import br.com.curso.cursospring.repositories.ClienteRepository;
 import br.com.curso.cursospring.repositories.EnderecoRepository;
 import br.com.curso.cursospring.repositories.EstadoRepository;
+import br.com.curso.cursospring.repositories.ItemPedidoRepository;
 import br.com.curso.cursospring.repositories.PagamentoRepository;
 import br.com.curso.cursospring.repositories.PedidoRepository;
 import br.com.curso.cursospring.repositories.ProdutoRepository;
@@ -48,6 +51,8 @@ public class CursospringApplication implements CommandLineRunner { //Command... 
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringApplication.class, args);
@@ -112,6 +117,20 @@ public class CursospringApplication implements CommandLineRunner { //Command... 
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+		
 	}
 
 }
