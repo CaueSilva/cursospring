@@ -2,7 +2,6 @@ package br.com.curso.cursospring;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
