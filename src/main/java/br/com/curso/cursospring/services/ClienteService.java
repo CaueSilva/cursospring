@@ -15,7 +15,7 @@ public class ClienteService {
 	@Autowired //instância automática do Spring
 	private ClienteRepository repo;
 	
-	public Cliente buscar(Integer id) {
+	public Cliente find(Integer id) {
 		Optional<Cliente> cliente = repo.findById(id);
 		return cliente.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado. Id: "+id+", tipo: "+Cliente.class.getName()));
