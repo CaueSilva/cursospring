@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import br.com.curso.cursospring.services.DBService;
+import br.com.curso.cursospring.services.EmailService;
+import br.com.curso.cursospring.services.SmtpEmailService;
 
 @Configuration
 @Profile("dev")
@@ -29,6 +31,12 @@ public class DevConfig {
 		}
 		dbService.instantiateTestDatabase();
 		return true;
+	}
+	
+	//O profile de desenvolvimento irá usar o Bean do SmtpEmailService
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 	
 }

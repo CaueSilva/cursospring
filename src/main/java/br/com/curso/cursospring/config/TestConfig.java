@@ -24,6 +24,7 @@ public class TestConfig {
 		return true;
 	}
 	
+	//O profile de testes irá usar o Bean do MockMailService
 	@Bean
 	public EmailService emailService() {
 		return new MockEmailService();
