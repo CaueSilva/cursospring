@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//Endpoints liberados para acesso, somente métodos GET:
 	private static final String[] PUBLIC_MATCHES_GET = {
 			"/produtos/**",
-			"/categorias/**"
+			"/categorias/**",
+			"/clientes/**"
 	};
 
 	@Override
