@@ -7,14 +7,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import br.com.curso.cursospring.security.JWTAuthenticationFilter;
+import br.com.curso.cursospring.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private Environment env;
+	@Autowired
+	private UserDetailsService userDetailsService;
+	@Autowired
+	private JWTUtil jwtUtil;
 
 	private static final String[] PUBLIC_MATCHES = {
 			"/h2-console/**"
@@ -54,6 +63,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		//Assegurando que o backend não irá criar sessão de usuário:
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
+		
+		//Adicionando filtro de Autenticação (implementado em JWTAuthenticationFilter):
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtUtil));
+	}
+	
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 
 	//Método que permite as configurações básicas de todos endpoints ("/**") de múltiplas fontes (.applyPermitDefaultValues()):
